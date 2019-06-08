@@ -1,0 +1,31 @@
+$mainColor: #202646;
+$altColor: #29e4b7;
+$white: #fff;
+$textColor: #737373;
+
+$mainFont: "Poppins", sans-serif;
+
+// Small devices (landscape phones, 576px and up)
+$small: "all and (min-width: 576px)";
+
+// Medium devices (tablets, 768px and up)
+$medium: "all and (min-width: 768px)";
+
+// Large devices (desktops, 992px and up)
+$large: "all and (min-width: 992px)";
+
+// Extra large devices (large desktops, 1200px and up)
+$x-large: "all and (min-width: 1200px)";
+
+// Extra extra large devices (large desktops, 1200px and up)
+$xx-large: "all and (min-width: 1650px)";
+
+// Vertical breakpoint
+$vertical: "all and (max-height: 450px)";
+
+@mixin flexCenter($direction) {
+  display: flex;
+  flex-flow: $direction;
+  align-items: center;
+  justify-content: center;
+}

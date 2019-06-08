@@ -1,13 +1,27 @@
 <template>
-  <div>
-    <h2>THanks for using our service</h2>
-    <router-link to="/dashboard">Lets start</router-link>
+  <div class="bg-wrapper">
+    <div class="full-screen">
+      <div class="container">
+        <router-link to="/" tag="h1" class="title">DEMO</router-link>
+
+        <main class="main-content--alt">
+          <div class="text-center text-md-left">
+            <p class="h1 text-capitalize pt-3">Thanks for using our service!</p>
+            <p
+              class="py-3"
+            >Sed ut erspiciatios unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis</p>
+
+            <router-link
+              to="/dashboard"
+              tag="button"
+              class="btn btn-custom text-uppercase"
+            >Let's start</router-link>
+          </div>
+        </main>
+      </div>
+    </div>
   </div>
 </template>
 
-<script>
-export default {};
-</script>
-
-<style>
+<style lang="scss">
 </style>
