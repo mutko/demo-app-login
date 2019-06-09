@@ -13,6 +13,9 @@
         </div>
         <div class="col-lg-6 col-xl-3 offset-xl-3 text-lg-right">
           <button class="btn btn-custom btn-custom--alt">Upload User</button>
+          <button class="btn btn-custom btn-custom--alt">
+            <span>&#9993;</span>
+          </button>
         </div>
       </div>
       <div class="row">
@@ -20,19 +23,19 @@
           <table class="table">
             <thead>
               <tr>
-                <td scope="col">List name</td>
-                <td scope="col">#Recipient</td>
-                <td scope="col">Uploaded By</td>
-                <td scope="col">Uploaded Date</td>
+                <td scope="col">#Id</td>
+                <td scope="col">User Name</td>
+                <td scope="col">Email</td>
+                <td scope="col">Uploaded</td>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Software-Nation Team</td>
-                <td>18</td>
-                <td>Denis Jonson</td>
-                <td>12/12/2018</td>
+              <tr v-for="user in allUsers" :key="user.id">
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
                 <td>
+                  {{user.created_at}}
                   <button>...</button>
                 </td>
               </tr>
@@ -45,7 +48,17 @@
 </template>
 
 <script>
-export default {};
+import { mapGetters, mapActions } from "vuex";
+export default {
+  name: "Dashboard",
+  computed: mapGetters(["allUsers"]),
+  methods: {
+    ...mapActions(["fetchUsers"])
+  },
+  created() {
+    this.fetchUsers();
+  }
+};
 </script>
 
 <style scoped lang="scss">
