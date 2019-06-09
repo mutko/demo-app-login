@@ -4,9 +4,10 @@
       <div class="wrapper text-center px-3 px-sm-0">
         <h1>DEMO</h1>
 
-        <form @submit.prevent="submitForm" id="signIn" class="sign-form">
+        <form @submit.prevent="onSubmit" class="sign-form">
           <div class="form-group">
             <input
+              v-model="name"
               type="text"
               name="name"
               placeholder="Name"
@@ -15,14 +16,7 @@
               required
             >
             <input
-              type="text"
-              name="organization"
-              placeholder="Organization"
-              id="organization"
-              class="form-control"
-              required
-            >
-            <input
+              v-model="email"
               type="email"
               name="email"
               placeholder="Email"
@@ -31,6 +25,7 @@
               required
             >
             <input
+              v-model="password"
               type="password"
               name="password"
               placeholder="Password"
@@ -38,8 +33,17 @@
               class="form-control"
               required
             >
+            <input
+              v-model="confirm"
+              type="password"
+              name="confirm"
+              placeholder="Confirm"
+              id="confirm"
+              class="form-control"
+              required
+            >
           </div>
-          <router-link to="/welcome" tag="button" class="btn btn-custom" type="submit">Submit</router-link>
+          <button class="btn btn-custom" type="submit">Submit</button>
         </form>
       </div>
     </main>
@@ -47,7 +51,28 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      name: "",
+      email: "",
+      password: "",
+      confirm: ""
+    };
+  },
+  methods: {
+    onSubmit() {
+      const formData = {
+        name: this.name,
+        email: this.email,
+        password: this.password,
+        password_confirmation: this.confirm
+      };
+      console.log(formData);
+      this.$store.dispatch("signUp", formData);
+    }
+  }
+};
 </script>
 
 <style>

@@ -4,17 +4,19 @@
       <div class="wrapper text-center px-3 px-sm-0">
         <h1>DEMO</h1>
 
-        <form @submit.prevent="submitForm" id="signIn" class="sign-form">
+        <form @submit.prevent="onSubmit" class="sign-form">
           <div class="form-group">
             <input
-              type="text"
-              name="username"
-              placeholder="Username"
+              v-model="email"
+              type="email"
+              name="email"
+              placeholder="Email"
               id="username"
               class="form-control"
               required
             >
             <input
+              v-model="password"
               type="password"
               name="password"
               placeholder="Password"
@@ -38,9 +40,20 @@
 
 <script>
 export default {
+  data() {
+    return {
+      email: "",
+      password: ""
+    };
+  },
   methods: {
-    submitForm() {
-      console.log("Form submited");
+    onSubmit() {
+      const formData = {
+        email: this.email,
+        password: this.password
+      };
+      console.log(formData);
+      this.$store.dispatch("logIn", formData);
     }
   }
 };
