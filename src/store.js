@@ -32,7 +32,9 @@ export default new Vuex.Store({
           localStorage.setItem("expirationDate", res.data.expires_at);
           router.replace("/dashboard");
         })
-        .catch(e => console.log(e));
+        .catch(e => {
+          alert("You have entered an invalid username or password");
+        });
     },
     autoLogin({ commit }) {
       const token = localStorage.getItem("token");
