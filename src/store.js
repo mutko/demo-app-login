@@ -26,11 +26,28 @@ export default new Vuex.Store({
         .then(res => {
           console.log(res);
           commit("authUser", res.data.access_token);
+          localStorage.setItem("token", res.data.access_token);
+          localStorage.setItem("expirationDate", res.data.expires_at);
         })
         .catch(e => console.log(e));
     },
+    autoLogin({ commit }) {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        return;
+      }
+
+      const expirationDate = localStorage.getItem("expirationDate");
+      const now = new Date();
+      if (now >= expirationDate) {
+        return;
+      }
+
+      commit("authUser", token);
+    },
     logout({ commit }) {
       commit("clearAuthData");
+      localStorage.clear();
       router.replace("/");
     },
     signUp({ commit }, authData) {
