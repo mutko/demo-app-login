@@ -79,7 +79,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div><!-- modal -->
               </tr>
             </tbody>
           </table>

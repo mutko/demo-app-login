@@ -38,9 +38,48 @@
                 <td>{{ mssg.name }}</td>
                 <td>
                   {{mssg.created_at.slice(0, 10)}}
-                  <button class="edit">...</button>
-                  <button class="del">x</button>
+                  <button
+                    @click="showMssg(mssg.id)"
+                    data-toggle="modal"
+                    data-target="#messageModal"
+                    class="edit"
+                  >...</button>
+                  <button @click="deleteMssg(mssg.id)" class="del">x</button>
                 </td>
+                <!-- Modal -->
+                <div
+                  class="modal fade"
+                  id="messageModal"
+                  tabindex="-1"
+                  role="dialog"
+                  aria-labelledby="messageModal"
+                  aria-hidden="true"
+                >
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="messageModal">Edit message</h5>
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p>{{name }}              </p>
+                        <form>
+                          <textarea v-model="message" cols="40" rows="10"></textarea>
+        
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                          @click="updateMssg"
+                          class="btn btn-secondary"
+                          data-dismiss="modal"
+                        >Save changes</button>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- modal -->
               </tr>
             </tbody>
           </table>
@@ -52,20 +91,81 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import axios from "axios";
 
 export default {
   name: "Messages",
+    data() {
+    return {
+      name: "",
+      message: "",
+      id: null
+    };
+  },
   computed: mapGetters(["allMessages"]),
   methods: {
     ...mapActions(["fetchMssg"]),
     onLogout() {
       this.$store.dispatch("logout");
+    },
+    showMssg(id) {
+      console.log(id);
+      axios
+        .get(`/messages/${id}`, {
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+        })
+        .then(res => {
+          console.log(res);
+          this.name = res.data.data.name;
+          this.message = res.data.data.body;
+          this.id = res.data.data.id;
+        })
+        .catch(e => console.log(e));
+    },
+    updateMssg() {
+      console.log('Message updated')
+      axios
+        .put(
+          `/messages/${this.id}`,
+          { body: this.message },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token")
+            }
+          }
+        )
+        .then(res => {
+          console.log(res);
+          this.$store.dispatch("fetchMssg");
+        })
+        .catch(e => console.log(e));
+    },
+    deleteMssg(id) {
+      let answer = confirm(
+        "Are you sure that you want to delete this message? You can not get him back after this"
+      );
+      if (answer) {
+        axios
+          .delete(`/messages/${id}`, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token")
+            }
+          })
+          .then(res => {
+            console.log(res);
+            alert(`Message with id of ${id} deleted!`);
+            this.$store.dispatch("fetchMssg");
+          })
+          .catch(e => console.log(e));
+      }
     }
   },
   created() {
     this.fetchMssg();
   }
 };
+
+
 </script>
 
 <style scoped lang="scss">
