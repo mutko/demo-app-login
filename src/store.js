@@ -58,8 +58,19 @@ export default new Vuex.Store({
     signUp({ commit }, authData) {
       axios
         .post("/auth/signup", authData)
-        .then(x => console.log(x))
-        .catch(e => console.log(e));
+        .then(res => {
+          console.log(res);
+          alert("User uccessfully created!");
+          router.replace("/dashboard");
+        })
+        .catch(e => {
+          console.log(e.response);
+          if (e.response.status === 422) {
+            alert("The email has already been taken.");
+          } else {
+            alert("Not valid data. Try again.");
+          }
+        });
     },
     fetchUsers({ commit, state }) {
       if (!state.access_token) {
