@@ -3,8 +3,10 @@
     <div class="logo">
       <router-link to="/" tag="h1">Demo</router-link>
     </div>
-    <div class="color-1"></div>
-    <div class="color-2"></div>
+    <div class="logout d-flex justify-content-end align-items-center pr-5">
+      <button @click="onLogout" class="btn btn-custom btn-custom--alt">Logout</button>
+    </div>
+    <div class="color"></div>
     <div class="content px-5 pt-5">
       <div class="row align-items-center">
         <div class="col-lg-6 col-xl-6 text-dark">
@@ -53,7 +55,10 @@ export default {
   name: "Dashboard",
   computed: mapGetters(["allUsers"]),
   methods: {
-    ...mapActions(["fetchUsers"])
+    ...mapActions(["fetchUsers"]),
+    onLogout() {
+      this.$store.dispatch("logout");
+    }
   },
   created() {
     this.fetchUsers();
@@ -90,12 +95,12 @@ export default {
     }
   }
 }
-.color-1 {
+.logout {
   background: $mainColor;
   grid-column: 2 / 3;
   grid-row: 1 / 2;
 }
-.color-2 {
+.color {
   background: $mainColor;
   grid-column: 1 / 2;
   grid-row: 2 / 3;
@@ -112,7 +117,7 @@ export default {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   display: inline-block;
   width: auto;
-  padding: 1rem 2rem;
+  padding: 0.6rem 1.25rem;
   text-transform: capitalize;
   &:hover {
     color: $mainColor;

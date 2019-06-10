@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
+import router from "./router";
 
 Vue.use(Vuex);
 
@@ -13,7 +14,10 @@ export default new Vuex.Store({
     authUser(state, token) {
       state.access_token = token;
     },
-    setUsers: (state, users) => (state.users = users)
+    setUsers: (state, users) => (state.users = users),
+    clearAuthData(state) {
+      state.access_token = null;
+    }
   },
   actions: {
     logIn({ commit }, authData) {
@@ -24,6 +28,10 @@ export default new Vuex.Store({
           commit("authUser", res.data.access_token);
         })
         .catch(e => console.log(e));
+    },
+    logout({ commit }) {
+      commit("clearAuthData");
+      router.replace("/");
     },
     signUp({ commit }, authData) {
       axios

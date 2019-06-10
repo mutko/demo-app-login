@@ -1,3 +1,6 @@
+import Vue from "vue";
+import VueRouter from "vue-router";
+
 import store from "./store";
 
 import SignIn from "./components/SignIn.vue";
@@ -7,7 +10,9 @@ import PasswordForgoten from "./components/PasswordForgoten.vue";
 import PasswordSent from "./components/PasswordSent.vue";
 import Dashboard from "./components/Dashboard.vue";
 
-export const routes = [
+Vue.use(VueRouter);
+
+const routes = [
   {
     path: "/",
     component: SignIn
@@ -40,3 +45,5 @@ export const routes = [
     }
   }
 ];
+
+export default new VueRouter({ mode: "history", routes });
