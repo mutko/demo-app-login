@@ -14,10 +14,7 @@
           <p>If you would like to seed your mailing with names of people within your organization, add their names here</p>
         </div>
         <div class="col-lg-6 col-xl-3 offset-xl-3 text-lg-right">
-          <button class="btn btn-custom btn-custom--alt">Upload User</button>
-          <button class="btn btn-custom btn-custom--alt ml-3">
-            <span>&#9993;</span>
-          </button>
+          <router-link to="/dashboard" tag="button" class="btn btn-custom btn-custom--alt">Users</router-link>
         </div>
       </div>
       <div class="row">
