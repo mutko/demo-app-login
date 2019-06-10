@@ -44,7 +44,7 @@
                     data-target="#exampleModal"
                     class="edit"
                   >...</button>
-                  <button class="del">x</button>
+                  <button @click="deleteUser(user.id)" class="del">x</button>
                 </td>
 
                 <!-- Modal -->
@@ -137,6 +137,25 @@ export default {
           this.$store.dispatch("fetchUsers");
         })
         .catch(e => console.log(e));
+    },
+    deleteUser(id) {
+      let answer = confirm(
+        "Are you sure that you want to delete this user? You can not get him back after this"
+      );
+      if (answer) {
+        axios
+          .delete(`/users/${id}`, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token")
+            }
+          })
+          .then(res => {
+            console.log(res);
+            alert(`User with id of ${id} deleted!`);
+            this.$store.dispatch("fetchUsers");
+          })
+          .catch(e => console.log(e));
+      }
     }
   },
   created() {
