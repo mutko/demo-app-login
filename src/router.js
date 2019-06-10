@@ -1,3 +1,5 @@
+import store from "./store";
+
 import SignIn from "./components/SignIn.vue";
 import SignUp from "./components/SignUp.vue";
 import Welcome from "./components/Welcome.vue";
@@ -28,6 +30,13 @@ export const routes = [
   },
   {
     path: "/dashboard",
-    component: Dashboard
+    component: Dashboard,
+    beforeEnter(to, from, next) {
+      if (store.state.access_token) {
+        next();
+      } else {
+        next("/");
+      }
+    }
   }
 ];
