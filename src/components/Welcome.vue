@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-wrapper">
+  <div class="bg-wrapper--alt">
     <div class="full-screen">
       <div class="container">
         <router-link to="/" tag="h1" class="title">DEMO</router-link>
@@ -24,4 +24,12 @@
 </template>
 
 <style lang="scss">
+.bg-wrapper--alt {
+  background-color: $mainColor;
+  background-image: url("../assets/clouds.png"), url('../assets/rocket.png');
+  background-repeat: no-repeat;
+  background-position: center top 50px, right bottom;
+  // background-size: 70% 60%;
+  height: 100%;
+}
 </style>
