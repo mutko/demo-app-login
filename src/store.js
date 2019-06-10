@@ -8,13 +8,15 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     users: [],
-    access_token: null
+    access_token: null,
+    messages: []
   },
   mutations: {
     authUser(state, token) {
       state.access_token = token;
     },
     setUsers: (state, users) => (state.users = users),
+    setMssg: (state, mssg) => (state.messages = mssg),
     clearAuthData(state) {
       state.access_token = null;
     }
@@ -69,9 +71,21 @@ export default new Vuex.Store({
           commit("setUsers", res.data.data.data);
         })
         .catch(e => console.log(e));
+    },
+    fetchMssg({ commit, state }) {
+      axios
+        .get("/messages", {
+          headers: { Authorization: "Bearer " + state.access_token }
+        })
+        .then(res => {
+          console.log(res);
+          commit("setMssg", res.data.data.data);
+        })
+        .catch(e => console.log(e));
     }
   },
   getters: {
-    allUsers: state => state.users
+    allUsers: state => state.users,
+    allMessages: state => state.messages
   }
 });

@@ -9,6 +9,7 @@ import Welcome from "./components/Welcome.vue";
 import PasswordForgoten from "./components/PasswordForgoten.vue";
 import PasswordSent from "./components/PasswordSent.vue";
 import Dashboard from "./components/Dashboard.vue";
+import Messages from "./components/Messages.vue";
 
 Vue.use(VueRouter);
 
@@ -36,6 +37,17 @@ const routes = [
   {
     path: "/dashboard",
     component: Dashboard,
+    beforeEnter(to, from, next) {
+      if (store.state.access_token) {
+        next();
+      } else {
+        next("/");
+      }
+    }
+  },
+  {
+    path: "/messages",
+    component: Messages,
     beforeEnter(to, from, next) {
       if (store.state.access_token) {
         next();

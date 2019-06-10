@@ -10,14 +10,14 @@
     <div class="content px-5 pt-5">
       <div class="row align-items-center">
         <div class="col-lg-6 col-xl-6 text-dark">
-          <p class="h3 py-2">Upload Users</p>
+          <p class="h3 py-2">Edit and Delete Messages</p>
           <p>If you would like to seed your mailing with names of people within your organization, add their names here</p>
         </div>
         <div class="col-lg-6 col-xl-3 offset-xl-3 text-lg-right">
           <button class="btn btn-custom btn-custom--alt">Upload User</button>
-          <router-link to="/messages" tag="button" class="btn btn-custom btn-custom--alt ml-3">
+          <button class="btn btn-custom btn-custom--alt ml-3">
             <span>&#9993;</span>
-          </router-link>
+          </button>
         </div>
       </div>
       <div class="row">
@@ -32,14 +32,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="user in allUsers" :key="user.id">
-                <td>{{ user.id }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.email }}</td>
+              <tr v-for="mssg in allMessages" :key="mssg.id">
+                <td>{{ mssg.id }}</td>
+                <td>{{ mssg.body }}</td>
+                <td>{{ mssg.name }}</td>
                 <td>
-                  {{user.created_at.slice(0, 10)}}
+                  {{mssg.created_at.slice(0, 10)}}
                   <button class="edit">...</button>
-                  <button @click="con(user.id)" class="del">x</button>
+                  <button class="del">x</button>
                 </td>
               </tr>
             </tbody>
@@ -52,27 +52,18 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import axios from "axios";
+
 export default {
-  name: "Dashboard",
-  computed: mapGetters(["allUsers"]),
+  name: "Messages",
+  computed: mapGetters(["allMessages"]),
   methods: {
-    ...mapActions(["fetchUsers"]),
+    ...mapActions(["fetchMssg"]),
     onLogout() {
       this.$store.dispatch("logout");
-    },
-    con(id) {
-      console.log(id);
-      axios
-        .get(`/users/${id}`, {
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") }
-        })
-        .then(x => console.log(x))
-        .catch(e => console.log(e));
     }
   },
   created() {
-    this.fetchUsers();
+    this.fetchMssg();
   }
 };
 </script>
