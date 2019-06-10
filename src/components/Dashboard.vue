@@ -38,9 +38,48 @@
                 <td>{{ user.email }}</td>
                 <td>
                   {{user.created_at.slice(0, 10)}}
-                  <button class="edit">...</button>
-                  <button @click="con(user.id)" class="del">x</button>
+                  <button
+                    @click="showUser(user.id)"
+                    data-toggle="modal"
+                    data-target="#exampleModal"
+                    class="edit"
+                  >...</button>
+                  <button class="del">x</button>
                 </td>
+
+                <!-- Modal -->
+                <div
+                  class="modal fade"
+                  id="exampleModal"
+                  tabindex="-1"
+                  role="dialog"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update user</h5>
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                          <input v-model="name" type="text" placeholder="Name">
+                          <input v-model="email" type="emai" placeholder="Email">
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                          @click="updateUser"
+                          class="btn btn-secondary"
+                          data-dismiss="modal"
+                        >Save changes</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </tr>
             </tbody>
           </table>
@@ -55,19 +94,48 @@ import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 export default {
   name: "Dashboard",
+  data() {
+    return {
+      name: "",
+      email: "",
+      id: null
+    };
+  },
   computed: mapGetters(["allUsers"]),
   methods: {
     ...mapActions(["fetchUsers"]),
     onLogout() {
       this.$store.dispatch("logout");
     },
-    con(id) {
+    showUser(id) {
       console.log(id);
       axios
         .get(`/users/${id}`, {
           headers: { Authorization: "Bearer " + localStorage.getItem("token") }
         })
-        .then(x => console.log(x))
+        .then(res => {
+          console.log(res);
+          this.name = res.data.data.name;
+          this.email = res.data.data.email;
+          this.id = res.data.data.id;
+        })
+        .catch(e => console.log(e));
+    },
+    updateUser() {
+      axios
+        .put(
+          `/users/${this.id}`,
+          { name: this.name, email: this.email },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token")
+            }
+          }
+        )
+        .then(res => {
+          console.log(res);
+          this.$store.dispatch("fetchUsers");
+        })
         .catch(e => console.log(e));
     }
   },
@@ -133,6 +201,9 @@ export default {
   &:hover {
     color: $mainColor;
   }
+}
+.modal {
+  color: $textColor;
 }
 </style>
 
