@@ -30,6 +30,7 @@ export default new Vuex.Store({
           commit("authUser", res.data.access_token);
           localStorage.setItem("token", res.data.access_token);
           localStorage.setItem("expirationDate", res.data.expires_at);
+          router.replace("/dashboard");
         })
         .catch(e => console.log(e));
     },

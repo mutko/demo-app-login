@@ -10,12 +10,15 @@
     <div class="content px-5 pt-5">
       <div class="row align-items-center">
         <div class="col-lg-6 col-xl-6 text-dark">
-          <p class="h3 py-2">Upload Users</p>
-          <p>If you would like to seed your mailing with names of people within your organization, add their names here</p>
+          <p class="h3 py-2">Upload, Edit and Delete Users</p>
         </div>
         <div class="col-lg-6 col-xl-3 offset-xl-3 text-lg-right">
           <!-- <button class="btn btn-custom btn-custom--alt">Upload User</button> -->
-          <router-link to="/messages" tag="button" class="btn btn-custom btn-custom--alt ml-3">Messages</router-link>
+          <router-link
+            to="/messages"
+            tag="button"
+            class="btn btn-custom btn-custom--alt ml-3"
+          >Messages</router-link>
         </div>
       </div>
       <div class="row">
@@ -77,7 +80,8 @@
                       </div>
                     </div>
                   </div>
-                </div><!-- modal -->
+                </div>
+                <!-- modal -->
               </tr>
             </tbody>
           </table>

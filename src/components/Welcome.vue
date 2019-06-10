@@ -26,7 +26,7 @@
 <style lang="scss">
 .bg-wrapper--alt {
   background-color: $mainColor;
-  background-image: url("../assets/clouds.png"), url('../assets/rocket.png');
+  background-image: url("../assets/clouds.png"), url("../assets/rocket.png");
   background-repeat: no-repeat;
   background-position: center top 50px, right bottom;
   // background-size: 70% 60%;

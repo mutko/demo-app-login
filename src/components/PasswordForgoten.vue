@@ -17,7 +17,7 @@
               class="form-control"
               required
             >
-            <button type="submit" class="btn btn-custom">SEND</button>
+            <router-link to="/passwordsent" tag="button" class="btn btn-custom" type="submit">SEND</router-link>
           </div>
         </main>
       </div>

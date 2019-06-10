@@ -11,7 +11,6 @@
       <div class="row align-items-center">
         <div class="col-lg-6 col-xl-6 text-dark">
           <p class="h3 py-2">Edit and Delete Messages</p>
-          <p>If you would like to seed your mailing with names of people within your organization, add their names here</p>
         </div>
         <div class="col-lg-6 col-xl-3 offset-xl-3 text-lg-right">
           <router-link to="/dashboard" tag="button" class="btn btn-custom btn-custom--alt">Users</router-link>
@@ -61,10 +60,9 @@
                         </button>
                       </div>
                       <div class="modal-body">
-                        <p>{{name }}              </p>
+                        <p>{{name }}</p>
                         <form>
                           <textarea v-model="message" cols="40" rows="10"></textarea>
-        
                         </form>
                       </div>
                       <div class="modal-footer">
@@ -76,7 +74,8 @@
                       </div>
                     </div>
                   </div>
-                </div><!-- modal -->
+                </div>
+                <!-- modal -->
               </tr>
             </tbody>
           </table>
@@ -92,7 +91,7 @@ import axios from "axios";
 
 export default {
   name: "Messages",
-    data() {
+  data() {
     return {
       name: "",
       message: "",
@@ -120,7 +119,7 @@ export default {
         .catch(e => console.log(e));
     },
     updateMssg() {
-      console.log('Message updated')
+      console.log("Message updated");
       axios
         .put(
           `/messages/${this.id}`,
@@ -161,8 +160,6 @@ export default {
     this.fetchMssg();
   }
 };
-
-
 </script>
 
 <style scoped lang="scss">

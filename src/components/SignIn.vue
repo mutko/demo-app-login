@@ -3,7 +3,6 @@
     <main class="main-content">
       <div class="wrapper text-center px-3 px-sm-0">
         <h1>DEMO</h1>
-        <router-link to="/dashboard">Dashboard</router-link>
         <form @submit.prevent="onSubmit" class="sign-form">
           <div class="form-group">
             <input
