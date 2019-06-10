@@ -11,19 +11,36 @@
               class="py-3"
             >Enter the email address associated with this account. We will email you a link with instructions on how to reset your password.</p>
             <input
+              v-model="email"
               type="email"
               name="email"
               placeholder="Enter your e-mail"
               class="form-control"
               required
             >
-            <router-link to="/passwordsent" tag="button" class="btn btn-custom" type="submit">SEND</router-link>
+            <router-link
+              to="/passwordsent"
+              tag="button"
+              class="btn btn-custom"
+              type="submit"
+              :disabled="email ? false : true"
+            >SEND</router-link>
           </div>
         </main>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      email: ""
+    };
+  }
+};
+</script>
 
 <style lang="scss">
 .full-screen {
