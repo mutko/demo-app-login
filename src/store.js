@@ -15,7 +15,8 @@ export default new Vuex.Store({
       prevPage: "",
       nextPage: "",
       lastPage: "",
-      currentPage: 1
+      currentPage: 1,
+      lastPageNo: 1
     }
   },
   mutations: {
@@ -31,7 +32,8 @@ export default new Vuex.Store({
     setPrev: (state, page) => (state.pages.prevPage = page),
     setNext: (state, page) => (state.pages.nextPage = page),
     setLast: (state, page) => (state.pages.lastPage = page),
-    setCurrent: (state, page) => (state.pages.currentPage = page)
+    setCurrent: (state, page) => (state.pages.currentPage = page),
+    setLastNo: (state, page) => (state.pages.lastPageNo = page)
   },
   actions: {
     logIn({ commit }, authData) {
@@ -54,11 +56,11 @@ export default new Vuex.Store({
         return;
       }
 
-      const expirationDate = localStorage.getItem("expirationDate");
-      const now = new Date();
-      if (now >= expirationDate) {
-        return;
-      }
+      // const expirationDate = localStorage.getItem("expirationDate");
+      // const now = new Date();
+      // if (now >= expirationDate) {
+      //   return;
+      // }
 
       commit("authUser", token);
     },
@@ -84,12 +86,12 @@ export default new Vuex.Store({
           }
         });
     },
-    fetchUsers({ commit, state }) {
+    fetchUsers({ commit, state }, page) {
       if (!state.access_token) {
         return;
       }
       axios
-        .get(state.pages.firstPage, {
+        .get(page, {
           headers: { Authorization: "Bearer " + state.access_token }
         })
         .then(res => {
@@ -100,11 +102,14 @@ export default new Vuex.Store({
           commit("setPrev", res.data.data.prev_page_url);
           commit("setLast", res.data.data.last_page_url);
           commit("setCurrent", res.data.data.current_page);
+          commit("setLastNo", res.data.data.last_page);
 
           console.log(state.pages.prevPage);
           console.log(state.pages.nextPage);
           console.log(state.pages.lastPage);
-          console.log(state.pages.currentPage);
+          console.log('Current page is ',state.pages.currentPage);
+          console.log('Last page is ',state.pages.lastPageNo);
+
         })
         .catch(e => console.log(e));
     },

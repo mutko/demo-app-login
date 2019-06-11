@@ -150,35 +150,31 @@
         </table>
       </div>
     </div>
-    <div class="row justify-content-center align-items-center">
+    <div class="row " >
       <div class="col">
         <nav aria-label="Search results pages">
-          <ul class="pagination">
-            <li @click="firstPage" class="page-item">
+          <ul class="pagination d-flex justify-content-center align-items-center text-center">
+            <li @click="firstPage"  v-if="this.allPages.currentPage !==1" class="page-item">
               <span class="page-link" href="#">
                 First
-                <br>page
               </span>
             </li>
-            <li @click="prevPage" class="page-item">
+            <li @click="prevPage" v-if="this.allPages.currentPage !==1"  class="page-item">
               <span class="page-link" href="#">
                 Prev
-                <br>page
               </span>
             </li>
             <li class="page-item">
-              <span class="page-link" href="#">Current</span>
+              <span class="page-link" href="#">{{ allPages.currentPage }}</span>
             </li>
-            <li @click="nextPage" class="page-item">
+            <li @click="nextPage"  v-if="this.allPages.lastPageNo !== this.allPages.currentPage" class="page-item">
               <span class="page-link" href="#">
                 Next
-                <br>page
               </span>
             </li>
-            <li @click="lastPage" class="page-item">
+            <li @click="lastPage" v-if="this.allPages.lastPageNo !== this.allPages.currentPage" class="page-item">
               <span class="page-link" href="#">
                 Last
-                <br>page
               </span>
             </li>
           </ul>
@@ -202,11 +198,12 @@ export default {
       createEmail: "",
       createPassword: "",
       createConfirm: "",
-      next: "",
-      prev: "",
-      last: "",
-      first: "",
-      current: null
+      pages: {
+        proxy: 'https://cors-anywhere.herokuapp.com/',
+        first: 'https://cors-anywhere.herokuapp.com/http://comtrade.sytes.net/api/users?page=1',
+        current: null
+      }
+
     };
   },
   computed: mapGetters(["allUsers", "allPages"]),
@@ -240,7 +237,7 @@ export default {
         )
         .then(res => {
           console.log(res);
-          this.$store.dispatch("fetchUsers");
+          this.fetchUsers(this.pages.first);
         })
         .catch(e => console.log(e));
     },
@@ -258,8 +255,8 @@ export default {
           .then(res => {
             console.log(res);
             alert(`User with id of ${id} deleted!`);
-            this.$store.dispatch("fetchUsers");
-          })
+              this.fetchUsers(this.pages.first);          
+            })
           .catch(e => console.log(e));
       }
     },
@@ -275,6 +272,8 @@ export default {
         .then(res => {
           console.log(res);
           alert("User uccessfully created!");
+          this.fetchUsers(this.pages.proxy + this.allPages.lastPage);
+
         })
         .catch(e => {
           console.log(e.response);
@@ -286,38 +285,21 @@ export default {
         });
     },
     firstPage() {
-      console.log("First Page");
+      this.fetchUsers(this.pages.first);
     },
     prevPage() {
-      console.log("Previous page");
+      this.fetchUsers(this.pages.proxy + this.allPages.prevPage);
     },
     nextPage() {
-      console.log("Next Page");
+      this.fetchUsers(this.pages.proxy + this.allPages.nextPage);
     },
     lastPage() {
+      this.fetchUsers(this.pages.proxy + this.allPages.lastPage);
       console.log("Last Page");
     }
-    // getUsers(link) {
-    //   axios
-    //     .get(link, {
-    //       headers: { Authorization: "Bearer " + state.access_token }
-    //     })
-    //     .then(res => {
-    //       console.log(res);
-    //       console.log(res.data.data.current_page);
-    //       console.log(res.data.data.next_page_url);
-    //       console.log(res.data.data.first_page_url);
-    //       console.log(res.data.data.last_page_url);
-    //       console.log(res.data.data.prev_page_url);
-
-    //       commit("setUsers", res.data.data.data);
-    //     })
-    //     .catch(e => console.log(e));
-    //   console.log("users")
-    // }
   },
   created() {
-    this.fetchUsers();
+    this.fetchUsers(this.pages.first);
   }
 };
 </script>
