@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12">
+      <div class="col">
         <table class="table">
           <thead>
             <tr>
@@ -62,9 +62,10 @@
                       </button>
                     </div>
                     <div class="modal-body">
-                      <form @submit.prevent="onSubmit" class="sign-form">
+                      <form class="sign-form">
                         <div class="form-group">
                           <input
+                            v-model="createName"
                             type="text"
                             name="name"
                             placeholder="Name"
@@ -72,6 +73,7 @@
                             required
                           >
                           <input
+                            v-model="createEmail"
                             type="email"
                             name="email"
                             placeholder="Email"
@@ -79,6 +81,7 @@
                             required
                           >
                           <input
+                            v-model="createPassword"
                             type="password"
                             name="password"
                             placeholder="Password"
@@ -86,6 +89,7 @@
                             required
                           >
                           <input
+                            v-model="createConfirm"
                             type="password"
                             name="confirm"
                             placeholder="Confirm"
@@ -100,7 +104,7 @@
                         @click="createUser"
                         class="btn btn-secondary"
                         data-dismiss="modal"
-                      >Save changes</button>
+                      >Create User</button>
                     </div>
                   </div>
                 </div>
@@ -146,6 +150,41 @@
         </table>
       </div>
     </div>
+    <div class="row justify-content-center align-items-center">
+      <div class="col">
+        <nav aria-label="Search results pages">
+          <ul class="pagination">
+            <li class="page-item">
+              <span class="page-link" href="#">
+                First
+                <br>page
+              </span>
+            </li>
+            <li class="page-item">
+              <span class="page-link" href="#">
+                Prev
+                <br>page
+              </span>
+            </li>
+            <li class="page-item">
+              <span class="page-link" href="#">Current</span>
+            </li>
+            <li class="page-item">
+              <span class="page-link" href="#">
+                Next
+                <br>page
+              </span>
+            </li>
+            <li class="page-item">
+              <span class="page-link" href="#">
+                Last
+                <br>page
+              </span>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -158,7 +197,16 @@ export default {
     return {
       name: "",
       email: "",
-      id: null
+      id: null,
+      createName: "",
+      createEmail: "",
+      createPassword: "",
+      createConfirm: "",
+      next: "",
+      prev: "",
+      last: "",
+      first: "",
+      current: null
     };
   },
   computed: mapGetters(["allUsers"]),
@@ -216,9 +264,45 @@ export default {
       }
     },
     createUser() {
-      const formData = {};
-      console.log("User created");
+      const formData = {
+        name: this.createName,
+        email: this.createEmail,
+        password: this.createPassword,
+        password_confirmation: this.createConfirm
+      };
+      axios
+        .post("/auth/signup", formData)
+        .then(res => {
+          console.log(res);
+          alert("User uccessfully created!");
+        })
+        .catch(e => {
+          console.log(e.response);
+          if (e.response.status === 422) {
+            alert("The email has already been taken.");
+          } else {
+            alert("Not valid data. Try again.");
+          }
+        });
     }
+    // getUsers(link) {
+    //   axios
+    //     .get(link, {
+    //       headers: { Authorization: "Bearer " + state.access_token }
+    //     })
+    //     .then(res => {
+    //       console.log(res);
+    //       console.log(res.data.data.current_page);
+    //       console.log(res.data.data.next_page_url);
+    //       console.log(res.data.data.first_page_url);
+    //       console.log(res.data.data.last_page_url);
+    //       console.log(res.data.data.prev_page_url);
+
+    //       commit("setUsers", res.data.data.data);
+    //     })
+    //     .catch(e => console.log(e));
+    //   console.log("users")
+    // }
   },
   created() {
     this.fetchUsers();
@@ -247,6 +331,9 @@ export default {
 }
 .modal {
   color: $textColor;
+}
+.page-item {
+  cursor: pointer;
 }
 </style>
 

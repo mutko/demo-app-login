@@ -9,17 +9,27 @@ export default new Vuex.Store({
   state: {
     users: [],
     access_token: null,
-    messages: []
+    messages: [],
+    firstPage: 1,
+    prevPage: null,
+    nextPage: null,
+    lastPage: null,
+    currentPage: 1
   },
   mutations: {
     authUser(state, token) {
       state.access_token = token;
     },
-    setUsers: (state, users) => (state.users = users),
-    setMssg: (state, mssg) => (state.messages = mssg),
     clearAuthData(state) {
       state.access_token = null;
-    }
+    },
+    setUsers: (state, users) => (state.users = users),
+    setMssg: (state, mssg) => (state.messages = mssg),
+
+    setPrev: (state, page) => (state.prevPage = page),
+    setNext: (state, page) => (state.nextPage = page),
+    setLast: (state, page) => (state.lastPage = page),
+    setCurrent: (state, page) => (state.currentPage = page)
   },
   actions: {
     logIn({ commit }, authData) {
@@ -77,12 +87,22 @@ export default new Vuex.Store({
         return;
       }
       axios
-        .get("/users", {
+        .get(`/users?page=${state.firstPage}`, {
           headers: { Authorization: "Bearer " + state.access_token }
         })
         .then(res => {
           console.log(res);
+
           commit("setUsers", res.data.data.data);
+          commit("setNext", res.data.data.next_page_url);
+          commit("setPrev", res.data.data.prev_page_url);
+          commit("setLast", res.data.data.last_page_url);
+          commit("setCurrent", res.data.data.current_page);
+
+          console.log(state.prevPage);
+          console.log(state.nextPage);
+          console.log(state.lastPage);
+          console.log(state.currentPage);
         })
         .catch(e => console.log(e));
     },

@@ -88,8 +88,6 @@ export default {
   border-radius: 2rem;
   border: none;
   text-align: center;
-  font-weight: 600;
-  color: $altColor;
   margin-bottom: 1rem;
   &:last-child {
     margin-bottom: 0;
