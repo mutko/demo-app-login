@@ -10,11 +10,13 @@ export default new Vuex.Store({
     users: [],
     access_token: null,
     messages: [],
-    firstPage: 1,
-    prevPage: null,
-    nextPage: null,
-    lastPage: null,
-    currentPage: 1
+    pages: {
+      firstPage: "/users?page=1",
+      prevPage: "",
+      nextPage: "",
+      lastPage: "",
+      currentPage: 1
+    }
   },
   mutations: {
     authUser(state, token) {
@@ -26,10 +28,10 @@ export default new Vuex.Store({
     setUsers: (state, users) => (state.users = users),
     setMssg: (state, mssg) => (state.messages = mssg),
 
-    setPrev: (state, page) => (state.prevPage = page),
-    setNext: (state, page) => (state.nextPage = page),
-    setLast: (state, page) => (state.lastPage = page),
-    setCurrent: (state, page) => (state.currentPage = page)
+    setPrev: (state, page) => (state.pages.prevPage = page),
+    setNext: (state, page) => (state.pages.nextPage = page),
+    setLast: (state, page) => (state.pages.lastPage = page),
+    setCurrent: (state, page) => (state.pages.currentPage = page)
   },
   actions: {
     logIn({ commit }, authData) {
@@ -87,7 +89,7 @@ export default new Vuex.Store({
         return;
       }
       axios
-        .get(`/users?page=${state.firstPage}`, {
+        .get(state.pages.firstPage, {
           headers: { Authorization: "Bearer " + state.access_token }
         })
         .then(res => {
@@ -99,10 +101,10 @@ export default new Vuex.Store({
           commit("setLast", res.data.data.last_page_url);
           commit("setCurrent", res.data.data.current_page);
 
-          console.log(state.prevPage);
-          console.log(state.nextPage);
-          console.log(state.lastPage);
-          console.log(state.currentPage);
+          console.log(state.pages.prevPage);
+          console.log(state.pages.nextPage);
+          console.log(state.pages.lastPage);
+          console.log(state.pages.currentPage);
         })
         .catch(e => console.log(e));
     },
@@ -120,6 +122,7 @@ export default new Vuex.Store({
   },
   getters: {
     allUsers: state => state.users,
-    allMessages: state => state.messages
+    allMessages: state => state.messages,
+    allPages: state => state.pages
   }
 });

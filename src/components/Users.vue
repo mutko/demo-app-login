@@ -154,13 +154,13 @@
       <div class="col">
         <nav aria-label="Search results pages">
           <ul class="pagination">
-            <li class="page-item">
+            <li @click="firstPage" class="page-item">
               <span class="page-link" href="#">
                 First
                 <br>page
               </span>
             </li>
-            <li class="page-item">
+            <li @click="prevPage" class="page-item">
               <span class="page-link" href="#">
                 Prev
                 <br>page
@@ -169,13 +169,13 @@
             <li class="page-item">
               <span class="page-link" href="#">Current</span>
             </li>
-            <li class="page-item">
+            <li @click="nextPage" class="page-item">
               <span class="page-link" href="#">
                 Next
                 <br>page
               </span>
             </li>
-            <li class="page-item">
+            <li @click="lastPage" class="page-item">
               <span class="page-link" href="#">
                 Last
                 <br>page
@@ -209,7 +209,7 @@ export default {
       current: null
     };
   },
-  computed: mapGetters(["allUsers"]),
+  computed: mapGetters(["allUsers", "allPages"]),
   methods: {
     ...mapActions(["fetchUsers"]),
 
@@ -284,6 +284,18 @@ export default {
             alert("Not valid data. Try again.");
           }
         });
+    },
+    firstPage() {
+      console.log("First Page");
+    },
+    prevPage() {
+      console.log("Previous page");
+    },
+    nextPage() {
+      console.log("Next Page");
+    },
+    lastPage() {
+      console.log("Last Page");
     }
     // getUsers(link) {
     //   axios
