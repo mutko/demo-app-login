@@ -12,6 +12,7 @@ export default new Vuex.Store({
     messages: [],
     pages: {
       firstPage: "/users?page=1",
+      firstPageMssg: "/messages?page=1",
       prevPage: "",
       nextPage: "",
       lastPage: "",
@@ -58,11 +59,15 @@ export default new Vuex.Store({
 
       // const expirationDate = localStorage.getItem("expirationDate");
       // const now = new Date();
-      // if (now >= expirationDate) {
+      // console.log(expirationDate);
+      // console.log(now);
+      // console.log(now == expirationDate);
+      // if (now <= expirationDate) {
       //   return;
       // }
 
       commit("authUser", token);
+      router.replace("/dashboard");
     },
     logout({ commit }) {
       commit("clearAuthData");
@@ -107,20 +112,24 @@ export default new Vuex.Store({
           console.log(state.pages.prevPage);
           console.log(state.pages.nextPage);
           console.log(state.pages.lastPage);
-          console.log('Current page is ',state.pages.currentPage);
-          console.log('Last page is ',state.pages.lastPageNo);
-
+          console.log("Current page is ", state.pages.currentPage);
+          console.log("Last page is ", state.pages.lastPageNo);
         })
         .catch(e => console.log(e));
     },
-    fetchMssg({ commit, state }) {
+    fetchMssg({ commit, state }, page) {
       axios
-        .get("/messages", {
+        .get(page, {
           headers: { Authorization: "Bearer " + state.access_token }
         })
         .then(res => {
           console.log(res);
           commit("setMssg", res.data.data.data);
+          commit("setNext", res.data.data.next_page_url);
+          commit("setPrev", res.data.data.prev_page_url);
+          commit("setLast", res.data.data.last_page_url);
+          commit("setCurrent", res.data.data.current_page);
+          commit("setLastNo", res.data.data.last_page);
         })
         .catch(e => console.log(e));
     }

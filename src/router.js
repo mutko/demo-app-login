@@ -38,17 +38,17 @@ const routes = [
   {
     path: "/dashboard",
     component: Dashboard,
+    children: [
+      { path: "", component: Users },
+      { path: "/messages", component: Messages }
+    ],
     beforeEnter(to, from, next) {
       if (store.state.access_token) {
         next();
       } else {
         next("/");
       }
-    },
-    children: [
-      { path: "", component: Users },
-      { path: "/messages", component: Messages }
-    ]
+    }
   }
 ];
 

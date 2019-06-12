@@ -24,15 +24,15 @@
               <td>{{ mssg.id }}</td>
               <td>{{ mssg.body.length > 40 ?` ${mssg.body.slice(0, 40)}[...]` : mssg.body }}</td>
               <td>{{ mssg.name }}</td>
+              <td>{{mssg.created_at.slice(0, 10)}}</td>
               <td>
-                {{mssg.created_at.slice(0, 10)}}
                 <button
                   @click="showMssg(mssg.id)"
                   data-toggle="modal"
                   data-target="#messageModal"
-                  class="edit"
-                >...</button>
-                <button @click="deleteMssg(mssg.id)" class="del">x</button>
+                  class="btn btn-edit"
+                >Edit</button>&nbsp;
+                <button @click="deleteMssg(mssg.id)" class="btn btn-edit">Del</button>
               </td>
               <!-- Modal -->
               <div
@@ -73,6 +73,37 @@
         </table>
       </div>
     </div>
+    <div class="row">
+      <div class="col">
+        <nav aria-label="Search results pages">
+          <ul class="pagination d-flex justify-content-center align-items-center text-center">
+            <li @click="firstPage" v-if="this.allPages.currentPage !==1" class="page-item">
+              <span class="page-link">First</span>
+            </li>
+            <li @click="prevPage" v-if="this.allPages.currentPage !==1" class="page-item">
+              <span class="page-link">Prev</span>
+            </li>
+            <li class="page-item">
+              <span class="page-link">{{ allPages.currentPage }}</span>
+            </li>
+            <li
+              @click="nextPage"
+              v-if="this.allPages.lastPageNo !== this.allPages.currentPage"
+              class="page-item"
+            >
+              <span class="page-link">Next</span>
+            </li>
+            <li
+              @click="lastPage"
+              v-if="this.allPages.lastPageNo !== this.allPages.currentPage"
+              class="page-item"
+            >
+              <span class="page-link">Last</span>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -86,10 +117,18 @@ export default {
     return {
       name: "",
       message: "",
-      id: null
+      id: null,
+      pages: {
+        proxy: "https://cors-anywhere.herokuapp.com/",
+        first:
+          "https://cors-anywhere.herokuapp.com/http://comtrade.sytes.net/api/users?page=1",
+        firstMssg:
+          "https://cors-anywhere.herokuapp.com/http://comtrade.sytes.net/api/messages?page=1",
+        current: null
+      }
     };
   },
-  computed: mapGetters(["allMessages"]),
+  computed: mapGetters(["allMessages", "allPages"]),
   methods: {
     ...mapActions(["fetchMssg"]),
     showMssg(id) {
@@ -120,7 +159,7 @@ export default {
         )
         .then(res => {
           console.log(res);
-          this.$store.dispatch("fetchMssg");
+          this.fetchMssg(this.pages.firstMssg);
         })
         .catch(e => console.log(e));
     },
@@ -138,14 +177,27 @@ export default {
           .then(res => {
             console.log(res);
             alert(`Message with id of ${id} deleted!`);
-            this.$store.dispatch("fetchMssg");
+            this.fetchMssg(this.pages.firstMssg);
           })
           .catch(e => console.log(e));
       }
+    },
+    firstPage() {
+      this.fetchMssg(this.pages.firstMssg);
+    },
+    prevPage() {
+      this.fetchMssg(this.pages.proxy + this.allPages.prevPage);
+    },
+    nextPage() {
+      this.fetchMssg(this.pages.proxy + this.allPages.nextPage);
+    },
+    lastPage() {
+      this.fetchMssg(this.pages.proxy + this.allPages.lastPage);
+      console.log("Last Page");
     }
   },
   created() {
-    this.fetchMssg();
+    this.fetchMssg(this.pages.firstMssg);
   }
 };
 </script>

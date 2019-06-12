@@ -33,15 +33,15 @@
               <td>{{ user.id }}</td>
               <td>{{ user.name }}</td>
               <td>{{ user.email }}</td>
+              <td>{{user.created_at.slice(0, 10)}}</td>
               <td>
-                {{user.created_at.slice(0, 10)}}
                 <button
                   @click="showUser(user.id)"
                   data-toggle="modal"
                   data-target="#exampleModal"
-                  class="edit"
-                >...</button>
-                <button @click="deleteUser(user.id)" class="del">x</button>
+                  class="btn btn-edit"
+                >Edit</button>&nbsp;
+                <button @click="deleteUser(user.id)" class="btn btn-edit">Del</button>
               </td>
 
               <!-- Modal for creating user -->
@@ -150,32 +150,32 @@
         </table>
       </div>
     </div>
-    <div class="row " >
+    <div class="row">
       <div class="col">
         <nav aria-label="Search results pages">
           <ul class="pagination d-flex justify-content-center align-items-center text-center">
-            <li @click="firstPage"  v-if="this.allPages.currentPage !==1" class="page-item">
-              <span class="page-link" href="#">
-                First
-              </span>
+            <li @click="firstPage" v-if="this.allPages.currentPage !==1" class="page-item">
+              <span class="page-link">First</span>
             </li>
-            <li @click="prevPage" v-if="this.allPages.currentPage !==1"  class="page-item">
-              <span class="page-link" href="#">
-                Prev
-              </span>
+            <li @click="prevPage" v-if="this.allPages.currentPage !==1" class="page-item">
+              <span class="page-link">Prev</span>
             </li>
             <li class="page-item">
-              <span class="page-link" href="#">{{ allPages.currentPage }}</span>
+              <span class="page-link">{{ allPages.currentPage }}</span>
             </li>
-            <li @click="nextPage"  v-if="this.allPages.lastPageNo !== this.allPages.currentPage" class="page-item">
-              <span class="page-link" href="#">
-                Next
-              </span>
+            <li
+              @click="nextPage"
+              v-if="this.allPages.lastPageNo !== this.allPages.currentPage"
+              class="page-item"
+            >
+              <span class="page-link">Next</span>
             </li>
-            <li @click="lastPage" v-if="this.allPages.lastPageNo !== this.allPages.currentPage" class="page-item">
-              <span class="page-link" href="#">
-                Last
-              </span>
+            <li
+              @click="lastPage"
+              v-if="this.allPages.lastPageNo !== this.allPages.currentPage"
+              class="page-item"
+            >
+              <span class="page-link">Last</span>
             </li>
           </ul>
         </nav>
@@ -199,11 +199,11 @@ export default {
       createPassword: "",
       createConfirm: "",
       pages: {
-        proxy: 'https://cors-anywhere.herokuapp.com/',
-        first: 'https://cors-anywhere.herokuapp.com/http://comtrade.sytes.net/api/users?page=1',
+        proxy: "https://cors-anywhere.herokuapp.com/",
+        first:
+          "https://cors-anywhere.herokuapp.com/http://comtrade.sytes.net/api/users?page=1",
         current: null
       }
-
     };
   },
   computed: mapGetters(["allUsers", "allPages"]),
@@ -255,8 +255,8 @@ export default {
           .then(res => {
             console.log(res);
             alert(`User with id of ${id} deleted!`);
-              this.fetchUsers(this.pages.first);          
-            })
+            this.fetchUsers(this.pages.first);
+          })
           .catch(e => console.log(e));
       }
     },
@@ -273,7 +273,6 @@ export default {
           console.log(res);
           alert("User uccessfully created!");
           this.fetchUsers(this.pages.proxy + this.allPages.lastPage);
-
         })
         .catch(e => {
           console.log(e.response);
@@ -311,6 +310,10 @@ export default {
   grid-row: 2 / 3;
   color: $textColor;
 }
+.table td,
+.table th {
+  vertical-align: middle;
+}
 .btn-custom--alt {
   color: $altColor;
   background: $white;
@@ -323,8 +326,17 @@ export default {
     color: $mainColor;
   }
 }
+.btn-edit {
+  background: $altColor;
+  color: $mainColor;
+}
 .modal {
   color: $textColor;
+  .sign-form {
+    .form-control {
+      border: 1px solid $mainColor;
+    }
+  }
 }
 .page-item {
   cursor: pointer;
