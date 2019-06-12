@@ -158,17 +158,17 @@
               <span class="page-link">First</span>
             </li>
             <li @click="prevPage" v-if="this.allPages.currentPage !==1" class="page-item">
-              <span class="page-link">Prev</span>
+              <span class="page-link">{{ allPages.currentPage - 1 }}</span>
             </li>
             <li class="page-item">
-              <span class="page-link">{{ allPages.currentPage }}</span>
+              <span class="page-link current">{{ allPages.currentPage }}</span>
             </li>
             <li
               @click="nextPage"
               v-if="this.allPages.lastPageNo !== this.allPages.currentPage"
               class="page-item"
             >
-              <span class="page-link">Next</span>
+              <span class="page-link">{{ allPages.currentPage + 1}}</span>
             </li>
             <li
               @click="lastPage"
@@ -340,6 +340,14 @@ export default {
 }
 .page-item {
   cursor: pointer;
+}
+.page-link {
+  color: $altColor;
+}
+.current {
+  padding: 1rem 1.5rem;
+  background: $altColor;
+  color: white;
 }
 </style>
 
