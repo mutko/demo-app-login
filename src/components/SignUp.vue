@@ -11,16 +11,15 @@
               type="text"
               name="name"
               placeholder="Name"
-              id="name"
               class="form-control"
               required
             >
             <input
               v-model="email"
+              @input="$v.email.$touch()"
               type="email"
               name="email"
               placeholder="Email"
-              id="email"
               class="form-control"
               required
             >
@@ -29,7 +28,6 @@
               type="password"
               name="password"
               placeholder="Password"
-              id="password"
               class="form-control"
               required
             >
@@ -38,7 +36,6 @@
               type="password"
               name="confirm"
               placeholder="Confirm"
-              id="confirm"
               class="form-control"
               required
             >
@@ -51,6 +48,8 @@
 </template>
 
 <script>
+import { required, email } from "vuelidate/lib/validators";
+
 export default {
   data() {
     return {
@@ -59,6 +58,12 @@ export default {
       password: "",
       confirm: ""
     };
+  },
+  validations: {
+    email: {
+      required,
+      email
+    }
   },
   methods: {
     onSubmit() {
